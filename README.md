@@ -13,7 +13,7 @@ LibraryApp er et konsolprogram til administration af et bibliotek. Programmet gi
 
 1. Klon repository:
     ```sh
-    git clone https://github.com/dit-brugernavn/LibraryApp.git
+    git clone https://github.com/SamzamNF/LibraryApp.git
     ```
 2. Åbn projektet i din foretrukne IDE.
 
@@ -36,6 +36,7 @@ Viser alle bøger i biblioteket. Du kan vælge at sortere bøgerne efter titel.
 ## Eksempel
 
 Når du kører programmet, vil du se følgende menu:
+
 ---- Adminstrer Biblotek ----
 
 Tilføj bog
