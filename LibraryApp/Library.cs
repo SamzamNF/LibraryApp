@@ -44,45 +44,39 @@ namespace LibraryApp
 
         public void RemoveBookByName(string bookName)
         {
-            Book bookToRemove = null;
-            foreach (var book in books)
+            bool found = false;
+            for (int i = 0; i < books.Count; i++)
             {
-                if (book.Titel == bookName)
+                if (books[i].Titel == bookName)
                 {
-                    bookToRemove = book; break;
+                    books.RemoveAt(i);
+                    Console.WriteLine($"Titel: {bookName} blev slettet");
+                    found = true;
+                    i--; // Minus med 1, fordi en bog er fundet.
                 }
             }
-
-            if (bookToRemove != null)
+            if (!found)
             {
-                books.Remove(bookToRemove);
-                Console.WriteLine($"Titel: {bookName} blev slettet");
-            }
-            else
-            {
-                Console.WriteLine("Bogen blev ikke fundet");
+                Console.WriteLine("Ingen bog med denne Titel");
             }
 
         }
         public void RemoveBookByIsbn(string isbnNumber)
         {
-            Book bookToRemove = null;
-            foreach (var book in Books)
+            bool found = false;
+            for (int i = 0; i < books.Count; i++)
             {
-                if (book.Isbn ==  isbnNumber)
+                if (books[i].Isbn == isbnNumber)
                 {
-                    bookToRemove = book; break;
+                    books.RemoveAt(i);
+                    Console.WriteLine($"ISBN: {isbnNumber} blev slettet");
+                    found = true;
+                    i--; // Minus med 1, fordi en bog er fundet.
                 }
             }
-
-            if (bookToRemove != null)
+            if (!found)
             {
-                books.Remove(bookToRemove);
-                Console.WriteLine($"ISBN: {isbnNumber} blev slettet\n");
-            }
-            else
-            {
-                Console.WriteLine("Bogen blev ikke fundet\n");
+                Console.WriteLine("Ingen bog med dette ISBN");
             }
         }
 

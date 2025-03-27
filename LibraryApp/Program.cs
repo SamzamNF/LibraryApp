@@ -20,9 +20,6 @@
                 {
                     case "1":
                         BookInput(library);
-                        Console.WriteLine("\nTryk enter for at gå tilbage til menuen..");
-                        Console.ReadLine();
-                        Console.Clear();
                         break;
                     case "2":
                         Console.WriteLine("\n1. For at slette med Titel: ");
@@ -80,7 +77,7 @@
             {
                 Book newBook = new Book(titel, forfatter, isbn);
                 library.AddBook(newBook);
-                Console.WriteLine("Bogen er tilføjet\n");
+                Console.WriteLine("Bogen er tilføjet");
             }
             catch (Exception ex)
             {
