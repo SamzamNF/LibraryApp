@@ -7,29 +7,9 @@ namespace LibraryApp
         private List<Book> books = new();
         
         public Library()
-        {
-            books = new List<Book>
-            {
-                new Book("To Kill a Mockingbird", "Harper Lee", "9780061120084"),
-                new Book("1984", "George Orwell", "9780451524935"),
-                new Book("The Catcher in the Rye", "J.D. Salinger", "9780316769488"),
-                new Book("Pride and Prejudice", "Jane Austen", "9781503290563"),
-                new Book("The Great Gatsby", "F. Scott Fitzgerald", "9780743273565"),
-                new Book("Moby-Dick", "Herman Melville", "9781503280786"),
-                new Book("War and Peace", "Leo Tolstoy", "9781400079988"),
-                new Book("The Brothers Karamazov", "Fyodor Dostoevsky", "9780374528379"),
-                new Book("The Hobbit", "J.R.R. Tolkien", "9780547928227"),
-                new Book("Les Misérables", "Victor Hugo", "9780451419439"),
-                new Book("Kongens Fald", "Johannes V. Jensen", "9788763813639"),
-                new Book("Den Kroniske Uskyld", "Hans-Jørgen Nielsen", "9788702158040"),
-                new Book("Harry Potter og De Vises Sten", "J.K. Rowling", "9788771202771"),
-                new Book("Lykke-Per", "Henrik Pontoppidan", "9788763803159"),
-                new Book("Høsten", "Bjarne Reuter", "9788740031259"),
-                new Book("Den Store Gatsby", "F. Scott Fitzgerald", "9788702146580"),
-                new Book("Pigen der legede med ilden", "Stieg Larsson", "9788759517236"),
-                new Book("Frøken Smillas fornemmelse for sne", "Peter Høeg", "9788702049072")
-
-            };
+        {            
+            books = new List<Book>();
+            LoadBooksFromFile();
         }
 
         public List<Book> Books
@@ -40,6 +20,11 @@ namespace LibraryApp
         public void AddBook(Book book)
         {
             books.Add(book);
+
+            string bookData = $"{book.Titel};{book.Forfatter};{book.Isbn}\n";
+            File.AppendAllText("library_books.txt", bookData);
+
+            Console.WriteLine($"Bogen '{book.Titel}' er tilføjet og gemt til filen.");
         }
 
         public void RemoveBookByName(string bookName)
@@ -55,7 +40,12 @@ namespace LibraryApp
                     i--; // Minus med 1, fordi en bog er fundet.
                 }
             }
-            if (!found)
+            if (found)
+            {
+                //Opdatere filen efter bogen fjernes fra listen.
+                UpdateBookFile();
+            }
+            else
             {
                 Console.WriteLine("Ingen bog med denne Titel");
             }
@@ -74,9 +64,14 @@ namespace LibraryApp
                     i--; // Minus med 1, fordi en bog er fundet.
                 }
             }
-            if (!found)
+            if (found)
             {
-                Console.WriteLine("Ingen bog med dette ISBN");
+                //Opdatere filen efter bogen fjernes fra listen.
+                UpdateBookFile();
+            }
+            else
+            {
+                Console.WriteLine("Ingen bog med denne Titel");
             }
         }
 
@@ -109,6 +104,39 @@ namespace LibraryApp
                 string printInfo = string.Format("{0,-40} {1,-25} {2,-15}", book.Titel, book.Forfatter, book.Isbn);
                 Console.WriteLine(printInfo);
             }
+        }
+        //Inti. bøger i konstruktør så de hentes når man kører program
+        public void LoadBooksFromFile()
+        {
+            if (File.Exists("library_books.txt"))
+            {
+                //Læser alle linjer fra filen og gemmer i et array. Gennemgår derefter hver linje. lines = én bog
+                string[] lines = File.ReadAllLines("library_books.txt");
+                foreach(string line in lines)
+                {
+                    //Deler linjen op i titel, forfatter osv ved at splitte ved ';" Sørger for linjen er 3 lang, hvis den er oprettes og tilføjes en ny bog til listen.
+                    string[] parts = line.Split(';');
+                    if (parts.Length == 3)
+                    {
+                        books.Add(new Book(parts[0], parts[1], parts[2]));
+                    }
+                }
+            }
+        }
+        //Metode til at opdatere filen med bøger når de slettes
+        public void UpdateBookFile()
+        {
+            List<string> bookData = new();
+
+            foreach (var book in books)
+            {
+                bookData.Add($"{book.Titel};{book.Forfatter};{book.Isbn}");
+            }
+
+            //Overskrider filen med den nye og opdateret liste af bøger
+            File.WriteAllLines("library_books.txt", bookData);
+
+            Console.WriteLine("Database opdateret");
         }
     }
 }

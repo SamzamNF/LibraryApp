@@ -54,6 +54,10 @@
                         {
                             library.PrintBooksSortByName();
                         }
+                        else
+                        {
+                            Console.WriteLine("Bøger sorteres ikke.");
+                        }
                         Console.WriteLine("\nTryk enter for at gå tilbage til menuen..");
                         Console.ReadLine();
                         Console.Clear();
